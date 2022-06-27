@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand">Navbar</a>
+        <form class="d-flex">
+            <div>welcome {{user.first_name}}</div>  
+            <div> <a href="/logout" class="d-flex flex-row-reverse bd-highlight"> log out</a></div> 
+        </form>
+    </div>
+</nav>
+{% if messages %}
+<ul class="messages">    
+    {% for message in messages %}    
+        <li {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>    
+    {% endfor %}
+</ul>
+{% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1 class="text-center">Add a favorite book</h1> 
+            <form method="post" action="/books">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Title</label>
+                    <input type="text" class="form-control" name="title">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Description</label>
+                    <input type="text" class="form-control" name="desc">
+                </div>
+                <input type="submit" value="Add" class="btn btn-secondary">
+            </form>
+        </div>
+        <div class="col">
+            <h3>All books</h3>
+            {% for book in books %}
+            <div>
+                <a href="/books/{{ book.id }}">{{book.title}}</a>
+                <p>(added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}})</p>
+                {% if user in book.users_who_like.all %}
+                <p>this is one of your favorites</p>
+                {% else %}
+                <a href="/books/{{book.id}}/favorite">add to favorites</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand">Navbar</a>
+        <form class="d-flex">
+            <div>welcome {{user.first_name}}</div>
+            <a href="/logout" class="d-flex flex-row-reverse bd-highlight">log out</a> 
+        </form>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                
+                <div class="card-body">
+                    {{ book.title }}
+                </div>
+                <div class="card-body">
+                    added by: {{ book.uploaded_by.first_name }} {{ book.uploaded_by.last_name }}
+                </div>
+                <div class="card-body">
+                    added on : {{ book.created_at }}
+                </div>
+                <div class="card-body">
+                    last updated on : {{book.updated_at}}
+                </div>
+                <div class="card-body">
+            {% if book.uploaded_by.id == request.session.userId %}
+                <form action="/books/{{bookId}}/edit">
+                    <div class="row form-group">
+                        <label class="margintop col-3"for="description"><h6>Description:</h6></label>
+                        <textarea class="marginright col-5 form-control"  name="desc" rows="3">{{book.desc}}</textarea>
+                    </div>
+                    <a href="/books/{{bookId}/edit}" class="moveit col-2 btn btn-success btn-sm">Update</a>
+                    <a href="/books/{{bookId}}/delete" class="col-2 btn btn-danger btn-sm danger">Delete</a>
+                </form>
+            {%else%}
+                <h6>Description:{{book.desc}}</h6>
+            {%endif%}
+                </div>
+                
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    users who like this book:
+                    {% for book in books.users_who_like.all %}
+                    <li class="list-group-item">{{user.first_name}} {{user.last_name}}</li>
+                    {% endfor %}
+                </div>
+                <div class="card-body">
+                    {% if book in user.liked_books.all %}    
+                    <li class="col-3 littlebit">{{user.first_name}} {{user.last_name}}</li>
+                    <a href="/books/{{book.id}}/unfavorite" class="small col-12 btn btn-danger btn-sm danger">Unfavorite</a>
+                    {% else %}    
+                    <a href="/books/{{book.id}}/favorite" class="small col-12 btn btn-info btn-sm">Add to Favorites</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

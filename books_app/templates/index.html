@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+{% if messages %}
+<ul class="messages">    
+    {% for message in messages %}    
+        <li {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>    
+    {% endfor %}
+</ul>
+{% endif %}
+{% if message %}
+    <h1>{{ message }}</h1>
+{% endif %}
+    <div class="row">
+        <div class="col-sm">
+            <h1>Registration</h1>
+            <form method="post" action="">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">first name</label>
+                    <input type="text" class="form-control" name="first_name" aria-describedby="emailHelp">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">last name</label>
+                    <input type="text" class="form-control" name="last_name" aria-describedby="emailHelp">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email</label>
+                    <input type="email" class="form-control" name="email" aria-describedby="emailHelp">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" class="form-control" name="password">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">confirm Password</label>
+                    <input type="password" class="form-control" name="con-password">
+                </div>
+                <input type="submit" value="Register" class="btn btn-secondary">
+                {% csrf_token %}
+            </form>
+        </div>
+        <div class="col-sm">
+            <h1>Login</h1>
+            <form method="post" action="/login">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email</label>
+                    <input type="email" class="form-control" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" class="form-control" name="password">
+                </div>
+                <input type="submit" value="login" class="btn btn-secondary">
+            </form>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
